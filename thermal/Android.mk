@@ -17,14 +17,14 @@ LOCAL_SRC_FILES := \
     utils/thermal_watcher.cpp
 
 LOCAL_SHARED_LIBRARIES := \
-    libbase \
-    libutils \
     libcutils \
     libhidlbase \
     android.hardware.thermal@1.0 \
     android.hardware.thermal@2.0 
 
 LOCAL_STATIC_LIBRARIES := \
+    libbase \
+    libutils \
     libjsoncpp
 
 LOCAL_REQUIRED_MODULES := \
