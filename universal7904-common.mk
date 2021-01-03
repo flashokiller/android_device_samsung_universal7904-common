@@ -78,6 +78,13 @@ PRODUCT_SOONG_NAMESPACES += \
 # System properties
 -include $(LOCAL_PATH)/product_prop.mk
 
+# Thermal
+PRODUCT_PACKAGES += \
+    android.hardware.thermal@2.0-service.samsung_universal7904
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/thermal_info_config.json:$(TARGET_COPY_OUT_PRODUCT)/vendor_overlay/29/etc/thermal_info_config.json
+
 # Trust HAL
 PRODUCT_PACKAGES += \
     lineage.trust@1.0-service
