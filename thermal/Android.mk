@@ -17,8 +17,10 @@ LOCAL_SRC_FILES := \
     utils/thermal_watcher.cpp
 
 LOCAL_SHARED_LIBRARIES := \
+    liblog \
     libcutils \
     libhidlbase \
+    libprocessgroup \
     android.hardware.thermal@1.0 \
     android.hardware.thermal@2.0 
 
