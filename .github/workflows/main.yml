@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: toolchain
-      run: git clone --depth=1 https://github.com/mvaisakh/gcc-arm64 ~/tc/gcc64 && git clone https://github.com/mvaisakh/gcc-arm --depth=1 ~/tc/gcc32
+      run: git clone --depth=1 https://github.com/kdrag0n/proton-clang ~/tc/cclang
     - name: ohk
       run: |
         echo ::set-output name=date::$(/bin/date -u "+%Y%m%d")
