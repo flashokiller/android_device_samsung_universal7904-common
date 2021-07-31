@@ -1,0 +1,47 @@
+name: Kernel Build CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: toolchain
+      run: git clone --depth=1 https://github.com/mvaisakh/gcc-arm64 ~/tc/gcc64 && git clone https://github.com/mvaisakh/gcc-arm --depth=1 ~/tc/gcc32
+    - name: ohk
+      run: |
+        echo ::set-output name=date::$(/bin/date -u "+%Y%m%d")
+    - name: When is this building
+      run: |
+        echo 'Building on ${{ steps.get-date.outputs.date }}'
+    - name: configure
+      run: make O=out ARCH=arm64 m30lte_defconfig
+    - name: make
+      run: CROSS_COMPILE=aarch64-linux-gnu- CC=clang CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+    - name: Kernel Image
+      run: cp out/arch/arm64/boot/Image.gz-dtb eva-kernel-${{ steps.get-date.outputs.date }}.gz
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+         tag_name: ${{ github.ref }}
+         release_name: Release ${{ github.ref }}
+         draft: true
+         prerelease: true
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./eva-kernel-${{ steps.get-date.outputs.date }}.gz
+        asset_name: eva-kernel-${{ steps.get-date.outputs.date }}.gz
+        asset_content_type: application/gz
